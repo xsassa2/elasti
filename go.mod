@@ -1,4 +1,4 @@
-module go.mau.fi/util
+module elasti/util
 
 go 1.21
 
