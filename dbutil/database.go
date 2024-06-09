@@ -118,12 +118,13 @@ type Database struct {
 var positionalParamPattern = regexp.MustCompile(`\$(\d+)`)
 
 func (db *Database) mutateQuery(query string) string {
+	fmt.Println(db.Dialect)
 	fmt.Printf("Original Query: %s", query)
 	switch db.Dialect {
 	case SQLite, TursoSQLite:
 		return positionalParamPattern.ReplaceAllString(query, "?$1")
 	default:
-		return query
+		return "--"
 	}
 }
 
