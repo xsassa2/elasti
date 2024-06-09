@@ -70,7 +70,7 @@ func (db *Database) getVersion(ctx context.Context) (version, compat int, err er
 
 const (
 	tableExistsPostgres = "SELECT EXISTS(SELECT 1 FROM information_schema.tables WHERE table_name=$1)"
-	tableExistsSQLite   = "SELECT EXISTS(SELECT 1 FROM sqlite_master WHERE type='table' AND tbl_name=?1)"
+	tableExistsSQLite   = "SELECT EXISTS(SELECT 1 FROM sqlite_master WHERE type='table' AND tbl_name=?)"
 )
 
 func (db *Database) TableExists(ctx context.Context, table string) (exists bool, err error) {
@@ -88,7 +88,7 @@ func (db *Database) TableExists(ctx context.Context, table string) (exists bool,
 
 const (
 	columnExistsPostgres = "SELECT EXISTS(SELECT 1 FROM information_schema.columns WHERE table_name=$1 AND column_name=$2)"
-	columnExistsSQLite   = "SELECT EXISTS(SELECT 1 FROM pragma_table_info(?1) WHERE name=?2)"
+	columnExistsSQLite   = "SELECT EXISTS(SELECT 1 FROM pragma_table_info(?) WHERE name=?)"
 )
 
 func (db *Database) ColumnExists(ctx context.Context, table, column string) (exists bool, err error) {
