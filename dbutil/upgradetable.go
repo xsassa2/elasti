@@ -134,9 +134,6 @@ const (
 
 func (db *Database) parseDialectFilter(line []byte) (dialect Dialect, lineCount int, uncomment bool, err error) {
 	match := dialectLineFilter.FindSubmatch(line)
-	fmt.Println(555)
-	fmt.Println(match)
-	fmt.Println(555)
 	if match == nil {
 		return
 	}
