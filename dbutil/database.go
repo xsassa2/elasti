@@ -22,6 +22,7 @@ const (
 	DialectUnknown Dialect = iota
 	Postgres
 	SQLite
+	TursoSQLite
 )
 
 func (dialect Dialect) String() string {
@@ -30,6 +31,8 @@ func (dialect Dialect) String() string {
 		return "postgres"
 	case SQLite:
 		return "sqlite3"
+	case TursoSQLite:
+		return "libsql"
 	default:
 		return ""
 	}
@@ -42,6 +45,8 @@ func ParseDialect(engine string) (Dialect, error) {
 		return Postgres, nil
 	} else if strings.HasPrefix(engine, "sqlite") || strings.HasPrefix(engine, "litestream") {
 		return SQLite, nil
+	} else if strings.HasPrefix(engine, "libsql") || strings.HasPrefix(engine, "tursoSQLite") {
+		return TursoSQLite, nil
 	} else {
 		return DialectUnknown, fmt.Errorf("unknown dialect '%s'", engine)
 	}
@@ -114,7 +119,7 @@ var positionalParamPattern = regexp.MustCompile(`\$(\d+)`)
 
 func (db *Database) mutateQuery(query string) string {
 	switch db.Dialect {
-	case SQLite:
+	case SQLite, TursoSQLite:
 		return positionalParamPattern.ReplaceAllString(query, "?$1")
 	default:
 		return query
