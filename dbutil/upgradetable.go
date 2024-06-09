@@ -304,3 +304,4 @@ func (ut *UpgradeTable) RegisterFSPath(fs fullFS, dir string) {
 		}
 	}
 }
+
