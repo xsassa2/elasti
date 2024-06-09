@@ -18,5 +18,3 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 )
-
-replace go.mau.fi/util => github.com/xsassa2/go-util v0.4.2
