@@ -120,7 +120,7 @@ var positionalParamPattern = regexp.MustCompile(`\$(\d+)`)
 func (db *Database) mutateQuery(query string) string {
 	fmt.Printf("Original Query: %s", query)
 	switch db.Dialect {
-	case SQLite:
+	case SQLite, TursoSQLite:
 		return positionalParamPattern.ReplaceAllString(query, "?$1")
 	default:
 		return query
