@@ -134,9 +134,6 @@ func (db *Database) checkDatabaseOwner(ctx context.Context) error {
 	if _, err := db.Exec(ctx, createOwnerTable); err != nil {
 		return fmt.Errorf("failed to ensure database owner table exists: %w", err)
 	} else if err = db.QueryRow(ctx, "SELECT owner FROM database_owner WHERE key=0").Scan(&owner); errors.Is(err, sql.ErrNoRows) {
-		fmt.Println(2122)
-		fmt.Println(db.Owner)
-		fmt.Println(212)
 		_, err = db.Exec(ctx, "INSERT INTO database_owner (key, owner) VALUES (0, $1)", db.Owner)
 		if err != nil {
 			return fmt.Errorf("failed to insert database owner: %w", err)
