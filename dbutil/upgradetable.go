@@ -123,7 +123,7 @@ func parseFileHeader(file []byte) (from, to, compat int, message string, txn boo
 // If the single-line limit is on the second line of the file, the whole file is limited to that dialect.
 //
 // If the filter ends with `(lines commented)`, then ALL lines chosen by the filter will be uncommented.
-var dialectLineFilter = regexp.MustCompile(`^\s*-- only: (postgres|sqlite)(?: for next (\d+) lines| until "(end) only")?(?: \(lines? (commented)\))?`)
+var dialectLineFilter = regexp.MustCompile(`^\s*-- only: (postgres|sqlite|libsql|tursoSQLite)(?: for next (\d+) lines| until "(end) only")?(?: \(lines? (commented)\))?`)
 
 // Constants used to make parseDialectFilter clearer
 const (
@@ -134,6 +134,9 @@ const (
 
 func (db *Database) parseDialectFilter(line []byte) (dialect Dialect, lineCount int, uncomment bool, err error) {
 	match := dialectLineFilter.FindSubmatch(line)
+	fmt.Println(555)
+	fmt.Println(match)
+	fmt.Println(555)
 	if match == nil {
 		return
 	}
@@ -155,7 +158,7 @@ func (db *Database) parseDialectFilter(line []byte) (dialect Dialect, lineCount 
 	return
 }
 
-var endLineFilter = regexp.MustCompile(`^\s*-- end only (postgres|sqlite)$`)
+var endLineFilter = regexp.MustCompile(`^\s*-- end only (postgres|sqlite|libsql|tursoSQLite)$`)
 
 func (db *Database) filterSQLUpgrade(lines [][]byte) (string, error) {
 	output := make([][]byte, 0, len(lines))
@@ -224,8 +227,8 @@ func sqlUpgradeFunc(fileName string, lines [][]byte) upgradeFunc {
 func splitSQLUpgradeFunc(sqliteData, postgresData string) upgradeFunc {
 	return func(ctx context.Context, db *Database) (err error) {
 		switch db.Dialect {
-		case SQLite:
-			_, err = db.Exec(ctx, sqliteData)
+		case SQLite, TursoSQLite:
+			_, err = db.Exec(ctx, sqliteData)	
 		case Postgres:
 			_, err = db.Exec(ctx, postgresData)
 		default:
@@ -272,7 +275,7 @@ type fullFS interface {
 	fs.ReadDirFS
 }
 
-var splitFileNameRegex = regexp.MustCompile(`^(.+)\.(postgres|sqlite)\.sql$`)
+var splitFileNameRegex = regexp.MustCompile(`^(.+)\.(postgres|sqlite|libsql|tursoSQLite)\.sql$`)
 
 func (ut *UpgradeTable) RegisterFS(fs fullFS) {
 	ut.RegisterFSPath(fs, ".")
