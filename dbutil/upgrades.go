@@ -75,7 +75,7 @@ const (
 
 func (db *Database) TableExists(ctx context.Context, table string) (exists bool, err error) {
 	switch db.Dialect {
-	case SQLite:
+	case SQLite, TursoSQLite:
 		err = db.QueryRow(ctx, tableExistsSQLite, table).Scan(&exists)
 	case Postgres:
 		err = db.QueryRow(ctx, tableExistsPostgres, table).Scan(&exists)
@@ -92,7 +92,7 @@ const (
 
 func (db *Database) ColumnExists(ctx context.Context, table, column string) (exists bool, err error) {
 	switch db.Dialect {
-	case SQLite:
+	case SQLite, TursoSQLite:
 		err = db.QueryRow(ctx, columnExistsSQLite, table, column).Scan(&exists)
 	case Postgres:
 		err = db.QueryRow(ctx, columnExistsPostgres, table, column).Scan(&exists)
