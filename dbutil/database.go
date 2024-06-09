@@ -118,13 +118,17 @@ type Database struct {
 var positionalParamPattern = regexp.MustCompile(`\?\d+`)
 
 func (db *Database) mutateQuery(query string) string {
+    var mutatedQuery string
     switch db.Dialect {
     case SQLite, TursoSQLite:
-        return positionalParamPattern.ReplaceAllString(query, "?")
+        mutatedQuery = positionalParamPattern.ReplaceAllString(query, "?")
     default:
-        return query
+        mutatedQuery = query
     }
+    fmt.Printf("Original Query: %s\nMutated Query: %s\n", query, mutatedQuery)
+    return mutatedQuery
 }
+
 
 func (db *Database) Child(versionTable string, upgradeTable UpgradeTable, log DatabaseLogger) *Database {
 	if log == nil {
