@@ -107,7 +107,7 @@ func (db *Database) tableExistsNoError(ctx context.Context, table string) bool {
 	fmt.Printf("Checking if table '%s' exists using dialect: %s\n", table, db.Dialect.String())
 	exists, err := db.TableExists(ctx, table)
 	if err != nil {
-		panic(fmt.Errorf("failed to check if table '%s' exists: %w", table, err))
+		panic(fmt.Errorf("**X failed to check if table '%s' exists: %w", table, err))
 	}
 	return exists
 }
