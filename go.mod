@@ -1,4 +1,4 @@
-module github.com/xsassa2/elasti
+module go.mau.fi/util
 
 go 1.21
 
