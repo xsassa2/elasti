@@ -1,4 +1,4 @@
-module elasti/util
+module elasti
 
 go 1.21
 
