@@ -1,4 +1,4 @@
-module elasti
+module github.com/xsassa2/elasti
 
 go 1.21
 
